@@ -29,9 +29,18 @@ public class NetworkTester : MonoBehaviour
                 {
                     client.Connect("127.0.0.1", 9999);
 
-                    client.Send(data, data.Length);
+                    JoinRequestPacket join = new JoinRequestPacket();
+                    join.header.Type = PacketType.JoinRequest;
+                    join.PlayerName = "Hero";
+                    byte[] sendData = NetworkUtils.Serialize(join);
+                    client.Send(sendData, sendData.Length);
 
-                    Debug.Log("Packet sent to 127.0.0.1:9999");
+                    System.Net.IPEndPoint serverEP = new System.Net.IPEndPoint(System.Net.IPAddress.Any, 0);
+                    byte[] recieveData = client.Receive(ref serverEP);
+
+                    WelcomePacket welcome = NetworkUtils.Deserialize<WelcomePacket>(recieveData);
+                    Debug.Log($"Server welcomed us! Our ID is: {welcome.PlayerId}");
+
                 }
             }
             catch (Exception e)
