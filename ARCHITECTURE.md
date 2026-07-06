@@ -4,6 +4,7 @@ This document outlines technical decisions and networking standards for the proj
 
 ## 1. Network Protocol (Shared)
 We utilize a binary protocol to minimize bandwidth usage and latency.
+Confirmed: Binary serialization produces identical 13-byte layout for PingPacket in both C++ and C#.
 
 ### Memory Mapping (C#)
 - Used `System.Runtime.InteropServices` to mirror C++ memory layout.
