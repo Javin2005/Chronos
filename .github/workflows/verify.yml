@@ -1,0 +1,23 @@
+name: Verify Build & Format
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -id cmake g++
+
+      - name: Configure CMake
+        run: cmake -S Server -B Server/build
+
+      - name: Build Server
+        run: cmake --build Server/build --config Release
+
