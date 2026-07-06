@@ -36,6 +36,20 @@ int main()
                 {
                     cout << "It's a Ping! Sequence: " << header->sequence << endl;
                 }
+                else if (header->type == PacketType::JoinRequest)
+                {
+                    JoinRequestPacket *joinReq = reinterpret_cast<JoinRequestPacket *>(recv_buf);
+
+                    cout << "Player wants to Join! Name: " << joinReq->playerName << endl;
+
+                    WelcomePacket welcome;
+                    welcome.header.type = PacketType::Welcome;
+                    welcome.header.sequence = 0;
+                    welcome.player_Id = 1;
+
+                    socket.send_to(asio::buffer(&welcome, sizeof(WelcomePacket)), remote_endpoint);
+                    cout << "Sent WelcomePacket back to client." << endl;
+                }
             }
         }
     }

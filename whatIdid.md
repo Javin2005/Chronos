@@ -9,3 +9,9 @@
 - Resolved environment issues (installed .NET SDK 8.0, configured Unity Registry).
 - Successfully ran the NetworkTester in Unity.
 - Confirmed that the Marshalling logic produces exactly 13 bytes, matching the C++ server's expectation.
+## [Session End - Handshake Success]
+- Mastered the use of `reinterpret_cast` to switch between "packet lenses" in C++.
+- Learned the difference between pointer syntax `Type* ptr` and `Type *ptr`.
+- Successfully debugged the Unity 6 "FileSystemTime" bug (ignored it and filtered logs).
+- Confirmed that 21-byte packets (JoinRequest) are received and parsed correctly on the backend.
+- Managed to send data back to the client using `socket.send_to`.

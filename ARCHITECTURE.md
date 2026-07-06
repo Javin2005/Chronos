@@ -5,6 +5,16 @@ This document outlines technical decisions and networking standards for the proj
 ## 1. Network Protocol (Shared)
 We utilize a binary protocol to minimize bandwidth usage and latency.
 Confirmed: Binary serialization produces identical 13-byte layout for PingPacket in both C++ and C#.
+### String Handling
+- Strings are transferred as fixed-size null-terminated byte arrays (`char[N]`).
+- C# utilizes `[MarshalAs(UnmanagedType.ByValTStr, SizeConst = N)]` to ensure compatibility with C++ memory layout.
+- Maximum player name length is currently set to 16 bytes.
+
+### Connection Flow (The Handshake)
+1. **Client -> Server:** `JoinRequestPacket` (Type 2) containing the desired `PlayerName`.
+2. **Server:** Validates packet size, extracts name via `reinterpret_cast`, and assigns a `PlayerId`.
+3. **Server -> Client:** `WelcomePacket` (Type 3) sent back to the sender's `remote_endpoint`.
+4. **Client:** Deserializes the `WelcomePacket` to confirm connection and store the assigned `PlayerId`.
 
 ### Memory Mapping (C#)
 - Used `System.Runtime.InteropServices` to mirror C++ memory layout.

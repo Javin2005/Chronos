@@ -4,9 +4,8 @@
 enum class PacketType : uint8_t
 {
     Ping = 1,
-    Welcome = 2,
-    PlayerInput = 3,
-    StateUpdate = 4
+    JoinRequest = 2,
+    Welcome = 3
 };
 
 #pragma pack(push, 1)
@@ -20,6 +19,18 @@ struct PingPacket
 {
     NetHeader header;
     uint64_t clientTimestamp;
+};
+
+struct JoinRequestPacket
+{
+    NetHeader header;
+    char playerName[16];
+};
+
+struct WelcomePacket
+{
+    NetHeader header;
+    uint16_t player_Id;
 };
 
 #pragma pack(pop)

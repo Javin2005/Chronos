@@ -6,9 +6,8 @@ namespace Chronos.Shared
     public enum PacketType : byte
     {
         Ping = 1,
-        Welcome = 2,
-        PlayerInput = 3,
-        StateUpdate = 4
+        JoinRequest = 2,
+        Welcome = 3
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -24,5 +23,20 @@ namespace Chronos.Shared
     {
         public NetHeader Header;
         public ulong ClientTimestamp;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct JoinRequestPacket
+    {
+        public NetHeader header;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string PlayerName;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct WelcomePacket
+    {
+        public NetHeader header;
+        public ushort PlayerId;
     }
 }
