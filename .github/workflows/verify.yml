@@ -1,23 +1,27 @@
-name: Verify Build & Format
+name: Verify Build
 
 on:
   push:
-    branches: [ dev ]
+    branches: [dev, main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-server:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Install Dependencies
-        run: sudo apt-get update && sudo apt-get install -id cmake g++
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++
 
       - name: Configure CMake
-        run: cmake -S Server -B Server/build
+        # Vi säger: Källkoden finns i Server, lägg build-filer i Server/build-ci
+        run: cmake -S Server -B Server/build-ci
 
       - name: Build Server
-        run: cmake --build Server/build --config Release
-
+        # Vi bygger mappen vi just skapade
+        run: cmake --build Server/build-ci --config Release
